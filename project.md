@@ -51,25 +51,6 @@ This will **stop and remove all containers** but retain data.
 
 ---
 
-## 🛠️ Project Structure
-
-```plaintext
-project/
-├── Dockerfile                   # Builds the Node.js application image
-├── docker-compose.yml            # Defines multi-container setup
-├── init-scripts/
-│   ├── seed.js                   # MongoDB seed script
-├── app/                          # Application source code
-│   ├── server.js                 # Main server file
-│   ├── package.json              # Node.js dependencies
-│   ├── routes/
-│   ├── models/
-│   ├── controllers/
-└── .dockerignore                 # Ignore unnecessary files
-```
-
----
-
 ## 🐳 **Dockerfile Explanation**
 
 1️⃣ **Uses `node:alpine`** as the base image for a lightweight build.
