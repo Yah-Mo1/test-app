@@ -1,0 +1,40 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+      - ./init-scripts:/docker-entrypoint-initdb.d # Auto-run scripts at startup
+    command: ["mongod", "--bind_ip", "0.0.0.0"]
+    healthcheck: # Ensure MongoDB is ready before the app starts
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: yah3i94/testapp:app
+    container_name: app
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy # Wait until MongoDB is ready
+    environment:
+      - DB_HOST=mongodb://mongo:27017/posts
+      - NODE_ENV=production # Example env variable for best practices
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/usr/src/app # Mount local directory (useful for development)
+    command: sh -c "node seeds/seed.js && npm start" # Separate seeding from npm install
+
+volumes:
+  mongo-data:
+    driver: local # Explicit volume driver for better portability
