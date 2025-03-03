@@ -1,4 +1,4 @@
-# 🐳 Dockerized Node.js App with MongoDB
+# 🐳 Dockerised Node.js App with MongoDB
 
 ## 📖 Overview
 
